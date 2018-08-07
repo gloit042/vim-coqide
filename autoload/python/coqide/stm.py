@@ -292,6 +292,7 @@ class STM:
         res, err = self._get_value_response('add')
 
         if err:
+            self._view.show_message('error', err['message'])
             state = _State(StateID(-1), sentence, self._view)
             state.set_flag('error', loc=err['loc'])
         else:
@@ -300,7 +301,7 @@ class STM:
 
         self._state_list.insert(self._tip_state, state)
 
-        if res['closed_proof']:
+        if res != None and res['closed_proof']:
             next_id = res['closed_proof']['next_state_id']
             next_state = self._state_list.find_by_id(next_id)
             self._tip_state = next_state
